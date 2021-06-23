@@ -28,7 +28,7 @@ Chore.init(
     },
     recurring_pattern_id: {
       references: {
-        model: "Recurring_Pattern",
+        model: "recurring_pattern",
         key: "id",
       },
     },
