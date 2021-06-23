@@ -27,6 +27,7 @@ Chore.init(
       type: DataTypes.BOOLEAN,
     },
     recurring_pattern_id: {
+      type: DataTypes.INTEGER,
       references: {
         model: "recurring_pattern",
         key: "id",
