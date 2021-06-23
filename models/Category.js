@@ -2,9 +2,9 @@ const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 const Chore = require("./Chore");
 
-class Chore extends Model {}
+class Category extends Model {}
 
-Chore.init({
+Category.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,4 +15,4 @@ Chore.init({
   },
 });
 
-module.exports = Chore;
+module.exports = Category;
