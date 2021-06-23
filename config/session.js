@@ -1,8 +1,11 @@
 require("dotenv").config();
+const sequelize = require("./connection");
+const session = require("express-session");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 // session will expire after 5 minutes of inactivity
 const sessionConfig = {
-  secret: rocess.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   cookie: {
     maxAge: 60 * 1000 * 5,
   },
@@ -14,4 +17,4 @@ const sessionConfig = {
   }),
 };
 
-module.exports = sessionConfig;
+module.exports = { session, sessionConfig };
