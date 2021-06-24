@@ -1,10 +1,21 @@
 const router = require("express").Router();
-const { User, Post, Comment } = require("../../models");
+const { Category } = require("../../models");
 const withAuth = require("../../utils/auth");
 
-// get all comments
+// get all categories
 router.get("/", (req, res) => {
-  Comment.findAll({})
+  Category.findAll({
+    attributes: [
+      "id",
+      "name",
+      [
+        sequelize.literal(
+          "(SELECT COUNT(*) FROM chore WHERE recurring_pattern.id = chore.recurring_pattern_id)"
+        ),
+        "chore_count",
+      ],
+    ],
+  })
     .then((dbData) => res.json(dbData))
     .catch((err) => {
       console.log(err);
@@ -12,12 +23,22 @@ router.get("/", (req, res) => {
     });
 });
 
-// get a comment by id
+// get a Category by id
 router.get("/:id", (req, res) => {
-  Comment.findAll({
+  Category.findAll({
     where: {
       id: req.params.id,
     },
+    attributes: [
+      "id",
+      "name",
+      [
+        sequelize.literal(
+          "(SELECT COUNT(*) FROM chore WHERE recurring_pattern.id = chore.recurring_pattern_id)"
+        ),
+        "chore_count",
+      ],
+    ],
   })
     .then((dbData) => res.json(dbData))
     .catch((err) => {
@@ -26,41 +47,11 @@ router.get("/:id", (req, res) => {
     });
 });
 
-// get all comments for a given user id
-router.get("/users/:user_id", (req, res) => {
-  Comment.findAll({
-    where: {
-      user_id: req.params.user_id,
-    },
-  })
-    .then((dbData) => res.json(dbData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// get all comments for a given post id
-router.get("/posts/:post_id", (req, res) => {
-  Comment.findAll({
-    where: {
-      post_id: req.params.post_id,
-    },
-  })
-    .then((dbData) => res.json(dbData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// create a new comment
+// create a new Category (requires a logged in USER)
 router.post("/", withAuth, (req, res) => {
-  // expects => {comment_text: "This is the comment", user_id: 1, post_id: 2}
+  // expects => {name: "Kitchen"}
   Comment.create({
-    comment_text: req.body.comment_text,
-    user_id: req.session.user_id,
-    post_id: req.body.post_id,
+    name: req.body.name,
   })
     .then((dbData) => res.json(dbData))
     .catch((err) => {
@@ -69,11 +60,11 @@ router.post("/", withAuth, (req, res) => {
     });
 });
 
-// UPDATE a comment (requires a logged in USER, must be same user that created the comment)
+// UPDATE a Category (requires a logged in USER)
 router.put("/:id", withAuth, (req, res) => {
   Comment.update(
     {
-      comment_text: req.body.comment_text,
+      name: req.body.name,
     },
     {
       where: {
@@ -84,9 +75,7 @@ router.put("/:id", withAuth, (req, res) => {
   )
     .then((dbData) => {
       if (!dbData) {
-        res
-          .status(404)
-          .json({ message: "No comment found with this id for this user!" });
+        res.status(404).json({ message: "No category found with this id" });
         return;
       }
       res.json(dbData);
@@ -97,7 +86,7 @@ router.put("/:id", withAuth, (req, res) => {
     });
 });
 
-// DELETE a comment (requires a logged in USER, must be same user that created the comment)
+// DELETE a Category (requires a logged in USER)
 router.delete("/:id", withAuth, (req, res) => {
   Comment.destroy({
     where: {
