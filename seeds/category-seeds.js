@@ -1,7 +1,7 @@
 const sequelize = require('../config/connection');
-const { Chore } = require('../models');
+const { Category } = require('../models');
 
-const category = [
+const categoryData = [
 	{
 		name: 'Kitchen',
 	},
@@ -12,12 +12,16 @@ const category = [
 		name: 'Living Room',
 	},
 	{
-		name: 'Kitchen',
+		name: 'Kids Bedroom',
 	},
 	{
-		name: 'Kitchen',
+		name: 'Upstairs Bathroom',
 	},
 	{
-		name: 'Kitchen',
+		name: 'Downstairs Bathroom',
 	},
 ];
+
+const categorySeeds = () => Category.bulkCreate(categoryData, { individualHooks: true });
+
+module.exports = categorySeeds;

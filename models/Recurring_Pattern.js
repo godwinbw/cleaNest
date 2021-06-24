@@ -13,6 +13,7 @@ Recurring_Pattern.init(
 		},
 		name: {
 			type: DataTypes.STRING,
+			allowNull: false,
 		},
 		is_daily: {
 			type: DataTypes.BOOLEAN,
