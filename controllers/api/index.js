@@ -7,9 +7,9 @@ const patternRoutes = require("./pattern-routes.js");
 const taskRoutes = require("./task-routes.js");
 
 router.use("/users", userRoutes);
-//router.use("/categories", categoryRoutes);
-//router.use("/chores", choreRoutes);
-//router.use("/patterns", patternRoutes);
-//router.use("/tasks", taskRoutes);
+router.use("/categories", categoryRoutes);
+router.use("/chores", choreRoutes);
+router.use("/patterns", patternRoutes);
+router.use("/tasks", taskRoutes);
 
 module.exports = router;

@@ -25,12 +25,18 @@ Task.init(
         model: "user",
         key: "id",
       },
+      allowNull: true,
+      defaultValue: null,
     },
     due_date: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
     },
     complete: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
     },
   },
   {

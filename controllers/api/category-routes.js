@@ -1,10 +1,57 @@
 const router = require("express").Router();
-const { User, Post, Comment } = require("../../models");
+const {
+  Category,
+  Chore,
+  Recurring_Pattern,
+  Task,
+  User,
+} = require("../../models");
+const sequelize = require("../../config/connection");
 const withAuth = require("../../utils/auth");
 
-// get all comments
+// get all categories
 router.get("/", (req, res) => {
-  Comment.findAll({})
+  Category.findAll({
+    attributes: ["id", "name"],
+    include: [
+      {
+        model: Chore,
+        attributes: ["id", "name", "is_recurring"],
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "name"],
+          },
+        ],
+        include: [
+          {
+            model: Recurring_Pattern,
+            attributes: [
+              "id",
+              "name",
+              "is_daily",
+              "is_weekly",
+              "is_monthly",
+              "day_of_week",
+              "week_of_month",
+            ],
+          },
+        ],
+        include: [
+          {
+            model: Task,
+            attributes: ["id", "due_date", "complete"],
+            include: [
+              {
+                model: User,
+                attributes: ["id", "display_name"],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  })
     .then((dbData) => res.json(dbData))
     .catch((err) => {
       console.log(err);
@@ -12,81 +59,55 @@ router.get("/", (req, res) => {
     });
 });
 
-// get a comment by id
+// get a Category by id
 router.get("/:id", (req, res) => {
-  Comment.findAll({
+  Category.findOne({
     where: {
       id: req.params.id,
     },
-  })
-    .then((dbData) => res.json(dbData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// get all comments for a given user id
-router.get("/users/:user_id", (req, res) => {
-  Comment.findAll({
-    where: {
-      user_id: req.params.user_id,
-    },
-  })
-    .then((dbData) => res.json(dbData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// get all comments for a given post id
-router.get("/posts/:post_id", (req, res) => {
-  Comment.findAll({
-    where: {
-      post_id: req.params.post_id,
-    },
-  })
-    .then((dbData) => res.json(dbData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// create a new comment
-router.post("/", withAuth, (req, res) => {
-  // expects => {comment_text: "This is the comment", user_id: 1, post_id: 2}
-  Comment.create({
-    comment_text: req.body.comment_text,
-    user_id: req.session.user_id,
-    post_id: req.body.post_id,
-  })
-    .then((dbData) => res.json(dbData))
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
-});
-
-// UPDATE a comment (requires a logged in USER, must be same user that created the comment)
-router.put("/:id", withAuth, (req, res) => {
-  Comment.update(
-    {
-      comment_text: req.body.comment_text,
-    },
-    {
-      where: {
-        id: req.params.id,
-        user_id: req.session.user_id,
+    attributes: ["id", "name"],
+    include: [
+      {
+        model: Chore,
+        attributes: ["id", "name", "is_recurring"],
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "name"],
+          },
+        ],
+        include: [
+          {
+            model: Recurring_Pattern,
+            attributes: [
+              "id",
+              "name",
+              "is_daily",
+              "is_weekly",
+              "is_monthly",
+              "day_of_week",
+              "week_of_month",
+            ],
+          },
+        ],
+        include: [
+          {
+            model: Task,
+            attributes: ["id", "due_date", "complete"],
+            include: [
+              {
+                model: User,
+                attributes: ["id", "display_name"],
+              },
+            ],
+          },
+        ],
       },
-    }
-  )
+    ],
+  })
     .then((dbData) => {
       if (!dbData) {
-        res
-          .status(404)
-          .json({ message: "No comment found with this id for this user!" });
+        res.status(404).json({ message: "No category found with this id" });
         return;
       }
       res.json(dbData);
@@ -97,19 +118,54 @@ router.put("/:id", withAuth, (req, res) => {
     });
 });
 
-// DELETE a comment (requires a logged in USER, must be same user that created the comment)
+// create a new Category (requires a logged in USER)
+router.post("/", withAuth, (req, res) => {
+  // expects => {name: "Kitchen"}
+  Category.create({
+    name: req.body.name,
+  })
+    .then((dbData) => res.json(dbData))
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
+// UPDATE a Category (requires a logged in USER)
+router.put("/:id", withAuth, (req, res) => {
+  Category.update(
+    {
+      name: req.body.name,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
+    .then((dbData) => {
+      if (!dbData) {
+        res.status(404).json({ message: "No category found with this id" });
+        return;
+      }
+      res.json(dbData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// DELETE a Category (requires a logged in USER)
 router.delete("/:id", withAuth, (req, res) => {
-  Comment.destroy({
+  Category.destroy({
     where: {
       id: req.params.id,
-      user_id: req.session.user_id,
     },
   })
     .then((dbData) => {
       if (!dbData) {
-        res
-          .status(404)
-          .json({ message: "No comment found with this id for this user!" });
+        res.status(404).json({ message: "No category found with this id" });
         return;
       }
       res.json(dbData);
