@@ -1,5 +1,5 @@
 const sequelize = require('../config/connection');
-const { User, Chore } = require('../models');
+const { Task } = require('../models');
 
 const taskData = [
 	{
@@ -15,7 +15,7 @@ const taskData = [
 		complete: false,
 	},
 	{
-		chore_id: 2,
+		chore_id: 5,
 		user_id: 2,
 		due_date: 2020 / 06 / 25,
 		complete: true,
@@ -27,7 +27,7 @@ const taskData = [
 		complete: false,
 	},
 ];
+console.log('hello', Task);
+const taskSeeds = () => Task.bulkCreate(taskData, { individualHooks: true });
 
-const seedTasks = () => Task.bulkCreate(taskData, { individualHooks: true });
-
-module.exports = seedUsers;
+module.exports = taskSeeds;
