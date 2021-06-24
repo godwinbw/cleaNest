@@ -6,16 +6,7 @@ const withAuth = require("../../utils/auth");
 // get all categories
 router.get("/", (req, res) => {
   Category.findAll({
-    attributes: [
-      "id",
-      "name",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM chore WHERE category.id = chore.category_id)"
-        ),
-        "chore_count",
-      ],
-    ],
+    attributes: ["id", "name"],
     include: [
       {
         model: Chore,
@@ -56,16 +47,7 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-    attributes: [
-      "id",
-      "name",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM chore WHERE category.id = chore.category_id)"
-        ),
-        "chore_count",
-      ],
-    ],
+    attributes: ["id", "name"],
   })
     .then((dbData) => res.json(dbData))
     .catch((err) => {

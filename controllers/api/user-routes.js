@@ -5,6 +5,24 @@ const { User, Task, Chore, Category } = require("../../models");
 router.get("/", (req, res) => {
   User.findAll({
     attributes: { exclude: ["password"] },
+    include: [
+      {
+        model: Task,
+        attributes: ["id", "due_date", "complete"],
+        include: [
+          {
+            model: Chore,
+            attributes: ["id", "name", "is_recurring"],
+            include: [
+              {
+                model: Category,
+                attributes: ["id", "name"],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   })
     .then((dbData) => res.json(dbData))
     .catch((err) => {
@@ -24,14 +42,18 @@ router.get("/:id", (req, res) => {
       {
         model: Task,
         attributes: ["id", "due_date", "complete"],
-        include: {
-          model: Chore,
-          attributes: ["id", "name"],
-          include: {
-            model: Category,
-            attributes: ["id", "name"],
+        include: [
+          {
+            model: Chore,
+            attributes: ["id", "name", "is_recurring"],
+            include: [
+              {
+                model: Category,
+                attributes: ["id", "name"],
+              },
+            ],
           },
-        },
+        ],
       },
     ],
   })
@@ -52,7 +74,7 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   // expects {username: 'electro', displayname: 'Electro Man', password: 'spark'}
   User.create({
-    displayname: req.body.displayname,
+    displayName: req.body.displayName,
     username: req.body.username,
     password: req.body.password,
   })
