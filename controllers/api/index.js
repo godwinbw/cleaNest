@@ -10,6 +10,6 @@ router.use("/users", userRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/chores", choreRoutes);
 router.use("/patterns", patternRoutes);
-//router.use("/tasks", taskRoutes);
+router.use("/tasks", taskRoutes);
 
 module.exports = router;
