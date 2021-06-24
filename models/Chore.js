@@ -15,6 +15,7 @@ Chore.init(
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     category_id: {
       type: DataTypes.INTEGER,

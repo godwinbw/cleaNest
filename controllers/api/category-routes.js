@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { Category } = require("../../models");
+const { Category, Chore, Recurring_Pattern } = require("../../models");
+const sequelize = require("../../config/connection");
 const withAuth = require("../../utils/auth");
 
 // get all categories
@@ -10,10 +11,36 @@ router.get("/", (req, res) => {
       "name",
       [
         sequelize.literal(
-          "(SELECT COUNT(*) FROM chore WHERE recurring_pattern.id = chore.recurring_pattern_id)"
+          "(SELECT COUNT(*) FROM chore WHERE category.id = chore.category_id)"
         ),
         "chore_count",
       ],
+    ],
+    include: [
+      {
+        model: Chore,
+        attributes: ["id", "name", "is_recurring"],
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "name"],
+          },
+        ],
+        include: [
+          {
+            model: Recurring_Pattern,
+            attributes: [
+              "id",
+              "name",
+              "is_daily",
+              "is_weekly",
+              "is_monthly",
+              "day_of_week",
+              "week_of_month",
+            ],
+          },
+        ],
+      },
     ],
   })
     .then((dbData) => res.json(dbData))
@@ -25,7 +52,7 @@ router.get("/", (req, res) => {
 
 // get a Category by id
 router.get("/:id", (req, res) => {
-  Category.findAll({
+  Category.findOne({
     where: {
       id: req.params.id,
     },
@@ -34,7 +61,7 @@ router.get("/:id", (req, res) => {
       "name",
       [
         sequelize.literal(
-          "(SELECT COUNT(*) FROM chore WHERE recurring_pattern.id = chore.recurring_pattern_id)"
+          "(SELECT COUNT(*) FROM chore WHERE category.id = chore.category_id)"
         ),
         "chore_count",
       ],

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { Recurring_Pattern } = require("../../models");
+const sequelize = require("../../config/connection");
 const withAuth = require("../../utils/auth");
 
 // get all recurring patterns

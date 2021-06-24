@@ -1,41 +1,51 @@
-const Category = require('./Category');
-const Recurring_Pattern = require('./Recurring_Pattern');
-const Chore = require('./Chore');
-const Task = require('./Task');
-const User = require('./User');
+const Category = require("./Category");
+const Recurring_Pattern = require("./Recurring_Pattern");
+const Chore = require("./Chore");
+const Task = require("./Task");
+const User = require("./User");
 
-// // User Assocations
+// // USER & TASK Assocations
+// A user can have many tasks
+// a task belongs to one user
 
-// // a User has many tasks
-// User.hasMany(Task);
+User.hasMany(Task, {
+  foreignKey: "user_id",
+});
 
-// // Task Associations
+Task.belongsTo(User, {
+  foreignKey: "user_id",
+});
 
-// // a TASK belongs to one user
-// Task.belongsTo(User, {
-// 	foreignKey: 'user_id',
-// 	onDelete: 'SET NULL',
-// });
+// TASK & CHORE Associations
+// A Tash belongs to one Chore
+Task.belongsTo(Chore, {
+  foreignKey: "chore_id",
+});
 
-// // a TASK belongs to one USER
-// Task.belongsTo(User, {
-// 	foreignKey: 'user_id',
-// });
+Chore.hasMany(Task, {
+  foreignKey: "chore_id",
+});
 
-// // Chore associations
+// CHORE & CATEGORY Assocation
+// A chore has one category
+// A category has many chores
+Chore.belongsTo(Category, {
+  foreignKey: "category_id",
+});
 
-// // a CHORE belongs to a TASK
-// Chore.belongsTo(Task, {
-// });
+Category.hasMany(Chore, {
+  foreignKey: "category_id",
+});
 
-// // a CHORE has one CATEGORY
-// Chore.hasOne(Category, {
-// 	foreignKey: 'category_id',
-// });
+// CHORE & RECURRING_PATTERN Associations
+// a chore has one recurring pattern
+// a recurring patern has many chores
+Chore.belongsTo(Recurring_Pattern, {
+  foreignKey: "recurring_pattern_id",
+});
 
-// // a CHORE has one RECURRING PATTERN
-// Chore.hasOne(Recurring_Pattern, {
-// 	foreignKey: 'recurring_pattern_id',
-// });
+Recurring_Pattern.hasMany(Chore, {
+  foreignKey: "recurring_pattern_id",
+});
 
 module.exports = { Category, Chore, Recurring_Pattern, Task, User };
