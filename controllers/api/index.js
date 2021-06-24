@@ -8,7 +8,7 @@ const taskRoutes = require("./task-routes.js");
 
 router.use("/users", userRoutes);
 router.use("/categories", categoryRoutes);
-//router.use("/chores", choreRoutes);
+router.use("/chores", choreRoutes);
 router.use("/patterns", patternRoutes);
 //router.use("/tasks", taskRoutes);
 

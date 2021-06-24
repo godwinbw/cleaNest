@@ -1,6 +1,12 @@
 const router = require("express").Router();
 const sequelize = require("../../config/connection");
-const { Chore, Category, Recurring_Pattern } = require("../../models");
+const {
+  Chore,
+  Category,
+  Recurring_Pattern,
+  User,
+  Task,
+} = require("../../models");
 const withAuth = require("../../utils/auth");
 
 // get ALL chores
@@ -13,8 +19,6 @@ router.get("/", (req, res) => {
         model: Category,
         attributes: ["id", "name"],
       },
-    ],
-    include: [
       {
         model: Recurring_Pattern,
         attributes: [
@@ -25,6 +29,16 @@ router.get("/", (req, res) => {
           "is_monthly",
           "day_of_week",
           "week_of_month",
+        ],
+      },
+      {
+        model: Task,
+        attributes: ["id", "due_date", "complete"],
+        include: [
+          {
+            model: User,
+            attributes: ["id", "display_name"],
+          },
         ],
       },
     ],
@@ -39,7 +53,7 @@ router.get("/", (req, res) => {
 // get a CHORE by ID
 router.get("/:id", (req, res) => {
   console.log("======================");
-  Post.findAll({
+  Chore.findOne({
     where: {
       id: req.params.id,
     },
@@ -49,8 +63,6 @@ router.get("/:id", (req, res) => {
         model: Category,
         attributes: ["id", "name"],
       },
-    ],
-    include: [
       {
         model: Recurring_Pattern,
         attributes: [
@@ -63,22 +75,39 @@ router.get("/:id", (req, res) => {
           "week_of_month",
         ],
       },
+      {
+        model: Task,
+        attributes: ["id", "due_date", "complete"],
+        include: [
+          {
+            model: User,
+            attributes: ["id", "display_name"],
+          },
+        ],
+      },
     ],
   })
-    .then((dbData) => res.json(dbData))
+    .then((dbData) => {
+      if (!dbData) {
+        res.status(404).json({ message: "No chore found with this id" });
+        return;
+      }
+      res.json(dbData);
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 
-// CREATE a new post (requires logged in user)
+// CREATE a new Chore (requires logged in user)
 router.post("/", withAuth, (req, res) => {
-  // expects {title: 'new post!', content: 'this is new content', user_id: 1}
-  Post.create({
-    title: req.body.title,
-    content: req.body.content,
-    user_id: req.session.user_id,
+  // expects {name: 'Scrub floor', category_id: 3, is_recurring: true, recurring_pattern_id: 3}
+  Chore.create({
+    name: req.body.name,
+    category_id: req.body.category_id,
+    is_recurring: req.body.is_recurring,
+    recurring_pattern_id: req.body.recurring_pattern_id,
   })
     .then((dbData) => res.json(dbData))
     .catch((err) => {
@@ -87,50 +116,17 @@ router.post("/", withAuth, (req, res) => {
     });
 });
 
-// UPDATE a POST (requires logged in User, user can only update their own posts
+// UPDATE a Chore (requires logged in User
 router.put("/:id", withAuth, (req, res) => {
   // expects {title: 'new post!', content: 'this is new content', user_id: 1}
-  Post.update(
-    {
-      title: req.body.title,
-      content: req.body.content,
-    },
-    {
-      where: {
-        id: req.params.id,
-        user_id: req.session.user_id,
-      },
-    }
-  )
-    .then((dbData) => {
-      if (!dbData) {
-        res
-          .status(404)
-          .json({ message: "No post found with this id for this user" });
-        return;
-      }
-      res.json(dbData);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// DELETE a POST (requries logged in USER, user can only delete their own posts)
-router.delete("/:id", withAuth, (req, res) => {
-  console.log("id", req.params.id);
-  Post.destroy({
+  Chore.update(req.body, {
     where: {
       id: req.params.id,
-      user_id: req.session.user_id,
     },
   })
     .then((dbData) => {
       if (!dbData) {
-        res
-          .status(404)
-          .json({ message: "No post found with this id for this user" });
+        res.status(404).json({ message: "No chore found with this id" });
         return;
       }
       res.json(dbData);
@@ -141,49 +137,21 @@ router.delete("/:id", withAuth, (req, res) => {
     });
 });
 
-//GET all posts for a given user ID
-router.get("/users/:user_id", (req, res) => {
-  console.log("======================");
-  Post.findAll({
+// DELETE a Chore (requries logged in USER)
+router.delete("/:id", withAuth, (req, res) => {
+  console.log("id", req.params.id);
+  Chore.destroy({
     where: {
-      user_id: req.params.user_id,
+      id: req.params.id,
     },
-    attributes: [
-      "id",
-      "title",
-      "content",
-      "created_at",
-      "updated_at",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM comment WHERE post.id = comment.post_id)"
-        ),
-        "comment_count",
-      ],
-    ],
-    include: [
-      {
-        model: Comment,
-        attributes: [
-          "id",
-          "comment_text",
-          "post_id",
-          "user_id",
-          "created_at",
-          "updated_at",
-        ],
-        include: {
-          model: User,
-          attributes: ["id", "username"],
-        },
-      },
-      {
-        model: User,
-        attributes: ["id", "username"],
-      },
-    ],
   })
-    .then((dbData) => res.json(dbData))
+    .then((dbData) => {
+      if (!dbData) {
+        res.status(404).json({ message: "No chore found with this id" });
+        return;
+      }
+      res.json(dbData);
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
