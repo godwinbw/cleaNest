@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Recurring_Pattern } = require("../../models");
+const { Recurring_Pattern, Chore, Category } = require("../../models");
 const sequelize = require("../../config/connection");
 const withAuth = require("../../utils/auth");
 
@@ -14,12 +14,18 @@ router.get("/", (req, res) => {
       "is_monthly",
       "day_of_week",
       "week_of_month",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM chore WHERE recurring_pattern.id = chore.recurring_pattern_id)"
-        ),
-        "chore_count",
-      ],
+    ],
+    include: [
+      {
+        model: Chore,
+        attributes: ["id", "name", "is_recurring"],
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "name"],
+          },
+        ],
+      },
     ],
   })
     .then((dbData) => res.json(dbData))
@@ -31,7 +37,7 @@ router.get("/", (req, res) => {
 
 // get a recurring pattern by id
 router.get("/:id", (req, res) => {
-  Recurring_Pattern.findAll({
+  Recurring_Pattern.findOne({
     where: {
       id: req.params.id,
     },
@@ -43,15 +49,29 @@ router.get("/:id", (req, res) => {
       "is_monthly",
       "day_of_week",
       "week_of_month",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM chore WHERE recurring_pattern.id = chore.recurring_pattern_id)"
-        ),
-        "chore_count",
-      ],
+    ],
+    include: [
+      {
+        model: Chore,
+        attributes: ["id", "name", "is_recurring"],
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "name"],
+          },
+        ],
+      },
     ],
   })
-    .then((dbData) => res.json(dbData))
+    .then((dbData) => {
+      if (!dbData) {
+        res
+          .status(404)
+          .json({ message: "No recurring pattern found with this id" });
+        return;
+      }
+      res.json(dbData);
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -61,7 +81,7 @@ router.get("/:id", (req, res) => {
 // create a new Recurring Pattern (requires a logged in USER)
 router.post("/", withAuth, (req, res) => {
   // expects => {name: "Daily Monday", is_daily: false, is_weekly: false, is_monthly: false, day_of_week: null, week_of_momth: null}
-  Comment.create({
+  Recurring_Pattern.create({
     name: req.body.name,
     is_daily: req.body.is_daily,
     is_weekly: req.body.is_weekly,
@@ -76,12 +96,11 @@ router.post("/", withAuth, (req, res) => {
     });
 });
 
-// UPDATE a Category (requires a logged in USER)
+// UPDATE a Recurring Pattern (requires a logged in USER)
 router.put("/:id", withAuth, (req, res) => {
-  Comment.update(req.body, {
+  Recurring_Pattern.update(req.body, {
     where: {
       id: req.params.id,
-      user_id: req.session.user_id,
     },
   })
     .then((dbData) => {
@@ -101,10 +120,9 @@ router.put("/:id", withAuth, (req, res) => {
 
 // DELETE a Recurring Pattern (requires a logged in USER)
 router.delete("/:id", withAuth, (req, res) => {
-  Comment.destroy({
+  Recurring_Pattern.destroy({
     where: {
       id: req.params.id,
-      user_id: req.session.user_id,
     },
   })
     .then((dbData) => {

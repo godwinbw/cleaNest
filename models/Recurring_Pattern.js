@@ -27,20 +27,39 @@ Recurring_Pattern.init(
     day_of_week: {
       type: DataTypes.INTEGER,
       validate: {
-        min: 0,
-        max: 6,
+        isValidDayOfWeek(value) {
+          if (parseInt(value) < 0) {
+            throw new Error("day of week must be between 0-6");
+          } else if (parseInt(value) > 6) {
+            throw new Error("day of week must be between 0-6");
+          }
+        },
       },
     },
     week_of_month: {
       type: DataTypes.INTEGER,
       validate: {
-        min: 1,
-        max: 4,
+        isValidWeekOfMonth(value) {
+          if (parseInt(value) < 1) {
+            throw new Error("week of month must be 1,2,3 or 4");
+          } else if (parseInt(value) > 4) {
+            throw new Error("week of month must be 1,2,3 or 4");
+          }
+        },
       },
     },
   },
   {
     sequelize,
+    validate: {
+      atLeastOneFreqencyTrue() {
+        if (!(this.is_daily || this.is_weekly || this.is_monthly)) {
+          throw new Error(
+            "At least one frequency (daily, weekly, or monthly) must be true"
+          );
+        }
+      },
+    },
     freezeTableName: true,
     underscored: true,
     modelName: "recurring_pattern",

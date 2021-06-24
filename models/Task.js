@@ -28,6 +28,8 @@ Task.init(
     },
     due_date: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
     },
     complete: {
       type: DataTypes.BOOLEAN,

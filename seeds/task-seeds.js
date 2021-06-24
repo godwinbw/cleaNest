@@ -28,6 +28,7 @@ const taskData = [
   },
 ];
 console.log("hello", Task);
-const taskSeeds = () => Task.bulkCreate(taskData, { individualHooks: true });
+const taskSeeds = () =>
+  Task.bulkCreate(taskData, { individualHooks: true, validate: true });
 
 module.exports = taskSeeds;
