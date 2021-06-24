@@ -1,53 +1,41 @@
-const User = require("./User");
-const Task = require("./Task");
-const Chore = require("./Chore");
-const Category = require("./Category");
-const Recurring_Pattern = require("./Recurring_Pattern");
+const Category = require('./Category');
+const Recurring_Pattern = require('./Recurring_Pattern');
+const Chore = require('./Chore');
+const Task = require('./Task');
+const User = require('./User');
 
-// *** USER associations ***
-//
-// a USER has many tasks
-User.hasMany(Task, {
-  foreignKey: "user_id",
-});
+// // User Assocations
 
-// a TASK belongs to one user
-Task.belongsTo(User, {
-  foreignKey: "user_id",
-  onDelete: "SET NULL",
-});
+// // a User has many tasks
+// User.hasMany(Task);
 
-// *** TASK associations
-//
-// a TASK is a type a single CHORE
-Task.hasOne(Chore, {
-  foreignKey: "chore_id",
-});
+// // Task Associations
 
-// a CHORE can have many TASKS
-Chore.hasMany(Task, {
-  foreignKey: "chore_id",
-});
+// // a TASK belongs to one user
+// Task.belongsTo(User, {
+// 	foreignKey: 'user_id',
+// 	onDelete: 'SET NULL',
+// });
 
-// *** CHORE associations
-//
-// a CHORE has one CATEGORY
+// // a TASK belongs to one USER
+// Task.belongsTo(User, {
+// 	foreignKey: 'user_id',
+// });
 
-Chore.hasOne(Category, {
-  foreignKey: "category_id",
-});
+// // Chore associations
 
-// a CATEGORY can have many CHORES
-Category.hasMany(Chore, {
-  foreignKey: "category_id",
-});
+// // a CHORE belongs to a TASK
+// Chore.belongsTo(Task, {
+// });
 
-// a CHORE has one RECURRING PATTERN
-Chore.hasOne(Recurring_Pattern, {
-  foreignKey: "recurring_pattern_id",
-});
+// // a CHORE has one CATEGORY
+// Chore.hasOne(Category, {
+// 	foreignKey: 'category_id',
+// });
 
-// a RECURRING PATTERN can have many CHORES
-Recurring_Pattern.hasMany(Chore, {
-  foreignKey: "recurring_pattern_id",
-});
+// // a CHORE has one RECURRING PATTERN
+// Chore.hasOne(Recurring_Pattern, {
+// 	foreignKey: 'recurring_pattern_id',
+// });
+
+module.exports = { Category, Chore, Recurring_Pattern, Task, User };
