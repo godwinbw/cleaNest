@@ -29,8 +29,7 @@ Task.init(
       defaultValue: null,
     },
     due_date: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     complete: {
