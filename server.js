@@ -1,9 +1,6 @@
 const path = require("path");
 const express = require("express");
 
-//const Bree = require("bree");
-//const bree = new Bree();
-
 //const exphbs = require("express-handlebars");
 
 const app = express();
@@ -42,7 +39,5 @@ sequelize.sync({ force: false }).then(() => {
     // then start the task scheduler to create recurring tasks on the schedule
     taskScheduler.start();
     console.log("Started NODE-CRON task scheduler...");
-    //bree.start();
-    //console.log("Started BREE task scheduler...");
   });
 });
