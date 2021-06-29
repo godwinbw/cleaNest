@@ -1,0 +1,19 @@
+<div class="task-detail">
+  <div class="task-owner">
+    {{#if user}}
+      <div class="task-assigned">{{user.display_name}}</div>
+    {{/if}}
+    {{#unless user}}
+      <div class="task-unassigned">Unassigned</div>
+    {{/unless}}
+  </div>
+
+  <div class="task-complete">
+    {{#if complete}}
+      <div class="task-complete">Complete</div>
+    {{/if}}
+    {{#unless complete}}
+      <div class="task-not-complete">Not Complete</div>
+    {{/unless}}
+  </div>
+</div>

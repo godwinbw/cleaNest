@@ -18,19 +18,24 @@ app.use(session(sessionConfig));
 
 //const helpers = require("./utils/helpers");
 
-const hbs = exphbs.create({ });
+const hbs = exphbs.create({});
 
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+<<<<<<< HEAD
 app.use(express.static('public'));
 app.get('/', (req, res) => {
+=======
+app.use(express.static(path.join(__dirname, "public")));
+>>>>>>> feature/user-routes
 
+//app.get("/", (req, res) => {
+//  res.render("homepage");
+//});
 
-  res.render('homepage');
-});
 app.use(require("./controllers/"));
 
 sequelize.sync({ force: false }).then(() => {

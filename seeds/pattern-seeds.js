@@ -102,7 +102,6 @@ const patternData = [
 
 const patternSeeds = () =>
   Recurring_Pattern.bulkCreate(patternData, {
-    individualHooks: true,
     validate: true,
   });
 

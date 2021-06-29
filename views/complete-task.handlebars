@@ -1,0 +1,25 @@
+<form class="task-complete-form">
+  <div class="task-owner">
+    {{#if user}}
+      <div class="task-assigned">{{user.display_name}}</div>
+    {{/if}}
+    {{#unless user}}
+      <div class="task-unassigned">Unassigned</div>
+    {{/unless}}
+  </div>
+
+    <label for "task-completed">Chore is complete!</label>
+    {{#if complete}}  
+      <input type="checkbox" id="task-complete-checkbox" name="task-completed" checked='checked'>
+    {{/if}}
+    {{#unless complete}}
+      <input type="checkbox" id="task-complete-checkbox" name="task-completed">
+    {{/unless}}
+
+    <div>
+      <button type="submit" class="login-button">Update Task</button>
+    </div>
+  
+</form>
+
+<script src="/javascript/task-complete.js"></script>

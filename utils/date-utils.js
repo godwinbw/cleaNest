@@ -14,4 +14,54 @@ const getWeekOfMonth = (dateString) => {
   return weekOfMonth;
 };
 
-module.exports = getWeekOfMonth;
+/// this function takes a dateString in format "YYYY-MM-DD" and returns a string of the form
+/// Wed (07/30)
+const getDisplayDate = (dateString) => {
+  let d = new Date(dateString + " (CDT)");
+  let dayOfWeek = d.getDay();
+  let day = d.getDate();
+  let month = d.getMonth() + 1;
+
+  //convert day of week to string
+  let dayOfWeekLong = "";
+  switch (dayOfWeek) {
+    case 0:
+      dayOfWeekLong = "Sun";
+      break;
+    case 1:
+      dayOfWeekLong = "Mon";
+      break;
+    case 2:
+      dayOfWeekLong = "Tue";
+      break;
+    case 3:
+      dayOfWeekLong = "Wed";
+      break;
+    case 4:
+      dayOfWeekLong = "Thu";
+      break;
+    case 5:
+      dayOfWeekLong = "Fri";
+      break;
+    case 6:
+      dayOfWeekLong = "Sat";
+      break;
+    default:
+      dayOfWeekLong = "Unknown";
+      break;
+  }
+
+  let returnObject = {
+    day_of_week: dayOfWeekLong,
+    month_day: month.toString() + "/" + day.toString(),
+  };
+  console.log("date string -> ", dateString);
+  console.log("return object -> ", returnObject);
+
+  return returnObject;
+};
+
+module.exports = {
+  getDisplayDate,
+  getWeekOfMonth,
+};

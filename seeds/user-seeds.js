@@ -27,4 +27,15 @@ const userdata = [
 const seedUsers = () =>
   User.bulkCreate(userdata, { individualHooks: true, validate: true });
 
+/*
+const seedUsers = function() {
+  return Promise.all([
+    User.create(userdata[0]),
+    User.create(userdata[1]),
+    User.create(userdata[2]),
+    User.create(userdata[3]),
+  ]);
+};
+*/
+
 module.exports = seedUsers;
