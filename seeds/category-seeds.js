@@ -26,6 +26,6 @@ const categoryData = [
 ];
 
 const categorySeeds = () =>
-  Category.bulkCreate(categoryData, { individualHooks: true, validate: true });
+  Category.bulkCreate(categoryData, { validate: true });
 
 module.exports = categorySeeds;

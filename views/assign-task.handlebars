@@ -1,0 +1,27 @@
+<form class="task-assign-form">
+  <div class="task-owner">
+
+    <label for "users">Choose a user:</label>
+    <select name="users" id="assign-task-select-user" class="task-assign-user-list".
+        {{#each users as |user|}}
+            <option value="{{user.id}}">{{user.display_name}}</option>
+        {{/each}}
+    </select>
+
+    <div class="task-complete">
+    {{#if complete}}
+      <div class="task-complete">Complete</div>
+    {{/if}}
+    {{#unless complete}}
+      <div class="task-not-complete">Not Complete</div>
+    {{/unless}}
+  </div>
+
+
+    <div>
+      <button type="submit" class="login-button">Update Task</button>
+    </div>
+  
+</form>
+
+<script src="/javascript/task-assign.js"></script>

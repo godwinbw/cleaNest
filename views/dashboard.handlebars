@@ -19,7 +19,7 @@
             {{#each category.tasks as |task|}}
               <li class="task-list-item">
                   <div class="task-title">
-                    {{chore.name}}
+                    <a href="/dashboard/edit/{{task.id}}">{{chore.name}}</a>
                   </div>
                 {{>task-info task}}
               </li>
@@ -35,4 +35,3 @@
   {{/each}}
 
 </div>
-

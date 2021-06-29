@@ -2,12 +2,12 @@ const sequelize = require("../../config/connection");
 const { Chore, Recurring_Pattern, Task } = require("../../models");
 const withAuth = require("../auth");
 const createTasks = require("./create-tasks");
-const getWeekOfMonth = require("../date-utils");
+const { getDisplayDate, getWeekOfMonth } = require("../date-utils");
 
 const monthlyTaskCreation = () => {
   console.log("....starting NODE-CRON monthly task creation!");
 
-  // find all CHORES that have a recurring pattern of "is_daily"
+  // find all CHORES that have a recurring pattern of "is_monthly"
   Chore.findAll({
     attributes: ["id", "name", "category_id"],
     include: [

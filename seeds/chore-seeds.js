@@ -76,7 +76,6 @@ const choreData = [
   },
 ];
 
-const choreSeeds = () =>
-  Chore.bulkCreate(choreData, { individualHooks: true, validate: true });
+const choreSeeds = () => Chore.bulkCreate(choreData, { validate: true });
 
 module.exports = choreSeeds;
