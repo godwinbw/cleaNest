@@ -3,32 +3,27 @@ const { User } = require("../models");
 
 const userdata = [
   {
-    displayName: "Clark Kent",
-    username: "SuperMan",
+    displayName: "Homer Simpson",
+    username: "homer",
     password: "password123",
   },
   {
-    displayName: "Diana Prince",
-    username: "WonderWoman",
+    displayName: "Marge Simpson",
+    username: "marge",
     password: "password123",
   },
   {
-    displayName: "Bruce Banner",
-    username: "Hulk",
+    displayName: "Bart Simpson",
+    username: "bart",
     password: "password123",
   },
   {
-    displayName: "Steve Rogers",
-    username: "CapAmerica",
-    password: "password123",
-  },
-  {
-    displayName: "Selina Kyle",
-    username: "CatWoman",
+    displayName: "Lisa Simpson",
+    username: "lisa",
     password: "password123",
   },
 ];
-console.log("hello");
+//console.log("hello");
 const seedUsers = () =>
   User.bulkCreate(userdata, { individualHooks: true, validate: true });
 

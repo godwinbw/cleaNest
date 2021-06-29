@@ -12,13 +12,16 @@ const categoryData = [
     name: "Living Room",
   },
   {
-    name: "Kids Bedroom",
+    name: "Lisa Bedroom",
   },
   {
-    name: "Upstairs Bathroom",
+    name: "Bart Bedroom",
   },
   {
-    name: "Downstairs Bathroom",
+    name: "Kids Bathroom",
+  },
+  {
+    name: "Bathroom",
   },
 ];
 
