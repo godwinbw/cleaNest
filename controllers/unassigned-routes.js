@@ -116,34 +116,43 @@ router.get("/edit/:id", withAuth, (req, res) => {
           .then((userData) => {
             if (userData) {
               // we have user data and we have the task data
-              console.log("we have user data");
-              //console.log("user data ", userData);
+              //console.log("we have user data");
+              //console.log("userData ", userData);
 
               const taskData = dbData.get({ plain: true });
               console.log("*** task data ***");
               console.log(taskData);
 
-              const userList = userData.get({ plain: true });
-              console.log("*** user data *** ");
+              //console.log("about convert userData to plain");
+              const userList = userData.map((singleUser) =>
+                singleUser.get({ plain: true })
+              );
+              console.log("*** user list *** ");
               console.log(userList);
 
-              res.render("task-assign", {
+              //res.json(userList);
+
+              res.render("assign-task", {
                 taskData,
                 userList,
                 loggedIn: true,
               });
             } else {
+              console.log("we have no user data");
               res.status(404).end();
             }
           })
           .catch((err) => {
+            console.log("had a problem in User.findAll");
             res.status(500).json(err);
           });
       } else {
+        console.log("we have no task data");
         res.status(404).end();
       }
     })
     .catch((err) => {
+      console.log("had a problem in Task.findByPk");
       res.status(500).json(err);
     });
 });

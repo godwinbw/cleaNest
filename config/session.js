@@ -3,11 +3,11 @@ const sequelize = require("./connection");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
-// session will expire after 5 minutes of inactivity
+// session will expire after 30 minutes of inactivity
 const sessionConfig = {
   secret: process.env.SESSION_SECRET,
   cookie: {
-    maxAge: 60 * 1000 * 5,
+    maxAge: 60 * 1000 * 30,
   },
   resave: true,
   rolling: true,

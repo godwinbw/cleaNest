@@ -27,10 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-//app.get("/", (req, res) => {
-//  res.render("homepage");
-//});
-
 app.use(require("./controllers/"));
 
 sequelize.sync({ force: false }).then(() => {

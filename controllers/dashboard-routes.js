@@ -74,7 +74,7 @@ router.get("/", withAuth, (req, res) => {
     });
 });
 
-// get a singel task to mark as complete or not
+// get a single task to mark as complete or not
 router.get("/edit/:id", withAuth, (req, res) => {
   Task.findByPk(req.params.id, {
     attributes: ["id", "due_date", "complete"],
@@ -109,12 +109,12 @@ router.get("/edit/:id", withAuth, (req, res) => {
   })
     .then((dbData) => {
       if (dbData) {
-        const post = dbData.get({ plain: true });
+        const taskData = dbData.get({ plain: true });
         console.log("*** task data ***");
-        console.log(task);
+        console.log(taskData);
 
         res.render("complete-task", {
-          task,
+          taskData,
           loggedIn: true,
         });
       } else {
