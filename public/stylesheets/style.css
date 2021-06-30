@@ -100,7 +100,6 @@ html {
   justify-content: center;
   align-items: center;
   color: #ebd404;
-  
 
   border-radius: 10px;
 
@@ -119,8 +118,8 @@ html {
   margin-bottom: 5px;
 }
 
-.task-completed {
-color: chartreuse;
+.task-complete {
+  color: chartreuse;
 }
 
 .task-unassigned {
