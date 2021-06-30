@@ -34,7 +34,7 @@ const choreData = [
   },
   {
     name: "Change bed sheets",
-    category_id: 6,
+    category_id: 2,
     is_recurring: true,
     recurring_pattern_id: 8,
   },

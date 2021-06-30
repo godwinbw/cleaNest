@@ -38,7 +38,7 @@ const getDailyTaskList = (taskList) => {
   });
 
   // now return the list as an array
-  console.dir("dailyTaskList -> ", dailyTaskList);
+  //console.dir("dailyTaskList -> ", dailyTaskList);
   return dailyTaskList;
 };
 
