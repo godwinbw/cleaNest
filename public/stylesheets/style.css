@@ -1,9 +1,9 @@
 /* color definitions */
 
 :root {
-  --bg-dark: #231111;
-  --bg-light: #d9ead3;
-  --text-dark: #231111;
+  --bg-dark: #3cabc7;
+  --bg-light: #5d6366f1;
+  --text-dark: #f7f2f1;
   --text-light: #d9ead3;
   --text-highlight: #9b9a9c;
   --shadow: #a7a7a7;
@@ -99,11 +99,12 @@ html {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  color: #ebd404;
 
   border-radius: 10px;
 
-  background-color: var(--bg-light);
-  color: var(--text-dark);
+  background-color: rgba(247, 211, 8, 0.938);
+  color: gray;
 
   box-shadow: 10px 5px 1px var(--shadow);
 }
@@ -115,4 +116,12 @@ html {
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.task-complete {
+  color: chartreuse;
+}
+
+.task-unassigned {
+  color: rgb(190, 19, 19);
 }
