@@ -1,0 +1,33 @@
+<form class="task-complete-form">
+  <h2>Task Detail</h2>
+
+  <div class="task-info">
+      <div class="chore-detail">Chore: {{taskData.chore.name}}</div>
+      <div class="category-detail">Where: {{taskData.chore.category.name}}</div>
+      <div class="due-date-detail">Due date: {{taskData.due_date}}</div>
+  </div>
+
+  <div class="task-owner">
+    {{#if taskData.user}}
+      <div class="task-assigned">Assigned to: {{taskData.user.display_name}}</div>
+    {{/if}}
+    {{#unless taskData.user}}
+      <div class="task-unassigned">Unassigned</div>
+    {{/unless}}
+  </div>
+
+    <label for "task-completed">Chore is complete!</label>
+    {{#if taskData.complete}}  
+      <input type="checkbox" id="task-complete-checkbox" name="task-completed" checked='checked'>
+    {{/if}}
+    {{#unless taskData.complete}}
+      <input type="checkbox" id="task-complete-checkbox" name="task-completed">
+    {{/unless}}
+
+    <div>
+      <button type="submit" class="login-button">Update Task</button>
+    </div>
+  
+</form>
+
+<script src="/javascript/task-complete.js"></script>

@@ -1,0 +1,36 @@
+<form class="task-assign-form">
+  
+  <h2>Task Detail</h2>
+
+  <div class="task-info">
+      <div class="chore-detail">Chore: {{taskData.chore.name}}</div>
+      <div class="category-detail">Where: {{taskData.chore.category.name}}</div>
+      <div class="due-date-detail">Due date: {{taskData.due_date}}</div>
+  </div>
+
+  <div class="task-complete">
+      {{#if taskData.complete}}
+        <div class="task-complete">Complete</div>
+      {{/if}}
+      {{#unless taskData.complete}}
+        <div class="task-not-complete">Not Complete</div>
+      {{/unless}}
+  </div>
+
+  <div class="task-owner">
+      <label for "users">Assign to:</label>
+      <select name="users" id="assign-task-select-user" class="task-assign-user-list">
+          {{#each userList as |user|}}
+              <option value="{{user.id}}">{{user.displayName}}</option>
+          {{/each}}
+      </select>
+  </div>
+
+
+    <div>
+      <button type="submit" class="login-button">Update Task</button>
+    </div>
+  
+</form>
+
+<script src="/javascript/task-assign.js"></script>

@@ -1,0 +1,37 @@
+<div class="pure-g" id="task-list-row">
+
+  {{#each dailyTaskList as |daily|}}
+  <div class="pure-u-1-8 task-list-colummn">
+    <div class="due-date-title">
+      <h2>{{ daily.display_date.day_of_week }}</h2>
+      <h3>{{ daily.display_date.month_day }}</h3>
+    </div>
+
+    {{#each daily.categories as |category|}}
+      <div class="category-task-container">
+
+        <div class="category-title">
+          <h2>{{ category.name }}</h2>
+        </div>
+
+        <ol class="category-task-list">
+
+            {{#each category.tasks as |task|}}
+              <li class="task-list-item">
+                  <div class="task-title">
+                    <a href="/unassigned/edit/{{task.id}}">{{chore.name}}</a>
+                  </div>
+                {{>task-info task}}
+              </li>
+            {{/each}}
+
+        </ol>
+
+      </div>
+    {{/each}}
+
+
+  </div>
+  {{/each}}
+
+</div>
