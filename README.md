@@ -67,8 +67,8 @@ We used [node-cron](https://www.npmjs.com/package/node-cron) to implememnt auto-
 
 ### **Group Project - screenshot**
 
-<!--
-
 <img src="./screenshot-1.png" style="width: 50%; height=auto;">
 
--->
+<img src="./screenshot-2.png" style="width: 50%; height=auto;">
+
+<img src="./screenshot-3.png" style="width: 50%; height=auto;">
