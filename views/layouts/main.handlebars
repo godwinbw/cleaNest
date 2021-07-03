@@ -1,48 +1,42 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cleaNest</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/purecss@2.0.5/build/pure-min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/purecss@2.0.5/build/grids-responsive-min.css"
-    />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-  </head>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+		<title>cleaNest</title>
+		<link rel='stylesheet' href='https://unpkg.com/purecss@2.0.5/build/pure-min.css' />
+		<link rel='stylesheet' href='https://unpkg.com/purecss@2.0.5/build/grids-responsive-min.css' />
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+	</head>
 
-  <header class="pure-g" id="banner-header">
-    <div class="pure-u-1" id="banner">
+	<header class='pure-g' id='banner-header'>
+		<div class='pure-u-1' id='banner'>
 
-      <nav id="navbar">
-        <a href="/home">Home</a>
-        {{#if loggedIn}}
-          <a href="/dashboard">My Tasks</a>
-          <a href="/unassigned">Unassigned Tasks</a>
-          <button id="logout" class="btn-logout">Logout</button>
-        {{else}}
-          <a href="/login">Login</a>
-        {{/if}}
-      </nav>
+			<nav id='navbar'>
+				<a href='/home'>Home</a>
+				{{#if loggedIn}}
+					<a href='/dashboard'>My Tasks</a>
+					<a href='/unassigned'>Unassigned Tasks</a>
+					<button id='logout' class='btn-logout'>Logout</button>
+				{{else}}
+					<a href='/login'>Login</a>
+				{{/if}}
+			</nav>
 
-      <div id="title">
-        <h1>cleaNest</h1>
-      </div>
+			<div id='title'>
+				<h1>cleaNest</h1>
+			</div>
 
-    </div>
-  </header>
+		</div>
+	</header>
 
-  <body>
-    <main>
-      {{{body}}}
-    </main>
+	<body>
+		<main>
+			{{{body}}}
+		</main>
 
-    {{#if loggedIn}}
-      <script src="/javascript/logout.js"></script>
-    {{/if}}
-  </body>
+		{{#if loggedIn}}
+			<script src='/javascript/logout.js'></script>
+		{{/if}}
+	</body>
 </html>
